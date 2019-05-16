@@ -43,8 +43,9 @@ class atlantis::install (
 
   if $manage_user {
     user { $user:
-      ensure => present,
-      gid    =>  $group,
+      ensure     => present,
+      gid        =>  $group,
+      managehome => true,
     }
   }
 
