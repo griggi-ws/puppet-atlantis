@@ -7,6 +7,7 @@ describe 'atlantis::config' do
       let(:params) do
         {
           'config'      => {},
+          'repo_config' => {},
           'environment' => [],
           'user'        => 'atlantis',
           'group'       => 'atlantis',
@@ -18,6 +19,29 @@ describe 'atlantis::config' do
       end
 
       it { is_expected.to compile }
+      it { is_expected.not_to contain_file('/etc/atlantis/repos.yaml') }
+
+      context 'with server-side repo config' do
+        let(:params) do
+          {
+            'config'      => {},
+            'environment' => [],
+            'user'        => 'atlantis',
+            'group'       => 'atlantis',
+            'repo_config' => {
+              'repos' => [{
+                'id' => '/.*/',
+                'apply_requirements' => ['approved', 'mergeable'],
+                'workflow' => 'custom',
+                'allowed_overrides' => ['apply_requirements', 'workflow'],
+                'allow_custom_workflows' => true,
+              }],
+            },
+          }
+        end
+
+        it { is_expected.to contain_file('/etc/atlantis/repos.yaml') }
+      end
     end
   end
 end

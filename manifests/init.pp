@@ -11,6 +11,9 @@
 # @param config
 #   Specifies a Hash of configuration options. These options are place in a YAML configuration file that Atlantis reads on startup.
 #
+# @param repo_config
+#   Specifies a Hash of server-side repo configuration options. These options are place in a YAML configuration file that Atlantis reads on startup.
+#
 # @param environment
 #   Specifices an Array of `KEY=VALUE` pairs. These environment variables are passed to Atlantis on startup and are useful for modifying Atlantis behavior and setting environment variables for use in Terraform code at a global level.
 #
@@ -40,6 +43,7 @@
 #
 class atlantis (
   Hash $config = {},
+  Hash $repo_config = {},
   Array $environment = [],
   String $user = 'atlantis',
   String $group = 'atlantis',
@@ -92,6 +96,7 @@ class atlantis (
 
   class { 'atlantis::config':
     config      => $_final_config,
+    repo_config => $repo_config,
     environment => $_final_environment,
     user        => $user,
     group       => $group,
@@ -101,6 +106,7 @@ class atlantis (
   class { 'atlantis::service':
     user              => $user,
     group             => $group,
+    repo_config       => $repo_config,
     add_net_bind_caps => $_add_net_bind_caps,
   }
   contain atlantis::service

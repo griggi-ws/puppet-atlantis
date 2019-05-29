@@ -1,6 +1,7 @@
 <%- |
   String $environment_file,
   String $config_file,
+  Optional[String] $repo_config_file,
   String $user,
   String $group,
   Boolean $add_net_bind_caps,
@@ -21,7 +22,7 @@ StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=atlantis
 EnvironmentFile=-<%= $environment_file %>
-ExecStart=/usr/local/bin/atlantis server --config <%= $config_file %>
+ExecStart=/usr/local/bin/atlantis server --config <%= $config_file %><% if $repo_config_file { %> --repo-config <%= $repo_config_file %><% } %>
 
 [Install]
 WantedBy=multi-user.target
