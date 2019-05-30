@@ -1,6 +1,7 @@
 # @api private
 class atlantis::config (
   $config,
+  $repo_config,
   $environment,
   $user,
   $group,
@@ -29,6 +30,16 @@ class atlantis::config (
     group   => $group,
     mode    => '0640',
     content => to_yaml($config),
+  }
+
+  if ! empty($repo_config) {
+    file { '/etc/atlantis/repos.yaml':
+      ensure  => file,
+      owner   => $user,
+      group   => $group,
+      mode    => '0640',
+      content => to_yaml($repo_config),
+    }
   }
 
 }

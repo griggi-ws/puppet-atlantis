@@ -20,6 +20,7 @@ describe 'atlantis' do
               'atlantis-url' => 'http://foo.example.com:4141',
               'port'         => 4141,
             },
+            'repo_config' => {},
           )
         end
       end
@@ -65,6 +66,36 @@ describe 'atlantis' do
         it do
           is_expected.to contain_class('atlantis::service').with(
             'add_net_bind_caps' => false,
+          )
+        end
+      end
+
+      context 'with server-side repo config' do
+        let(:params) do
+          {
+            'repo_config' => {
+              'repos' => [{
+                'id' => '/.*/',
+                'apply_requirements' => ['approved', 'mergeable'],
+                'workflow' => 'custom',
+                'allowed_overrides' => ['apply_requirements', 'workflow'],
+                'allow_custom_workflows' => true,
+              }],
+            },
+          }
+        end
+
+        it do
+          is_expected.to contain_class('atlantis::config').with(
+            'repo_config' => {
+              'repos' => [{
+                'id' => '/.*/',
+                'apply_requirements' => ['approved', 'mergeable'],
+                'workflow' => 'custom',
+                'allowed_overrides' => ['apply_requirements', 'workflow'],
+                'allow_custom_workflows' => true,
+              }],
+            },
           )
         end
       end
