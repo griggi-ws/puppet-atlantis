@@ -5,6 +5,7 @@
   "summary": "Install and configure Atlantis",
   "license": "Apache-2.0",
   "source": "https://github.com/walkamongus/puppet-atlantis",
+  "project_page": "https://github.com/walkamongus/puppet-atlantis",
   "issues_url": "https://github.com/walkamongus/puppet-atlantis/issues",
   "dependencies": [
     {
