@@ -21,6 +21,9 @@
 #   Specifies the user to run Atlantis under.
 #
 # @param group
+#   Specifies the state of the Atlantis service. Defaults to 'running'.
+#
+# @param service_ensure
 #   Specifies the group to run Atlantis under.
 #
 # @param manage_user
@@ -47,6 +50,7 @@ class atlantis (
   Array $environment = [],
   String $user = 'atlantis',
   String $group = 'atlantis',
+  Optional[Variant[String,Boolean]] $service_ensure = 'running',
   Boolean $manage_user = true,
   Boolean $manage_group = true,
   String $version = 'v0.6.0',
@@ -103,16 +107,20 @@ class atlantis (
   }
   contain atlantis::config
 
-  class { 'atlantis::service':
-    user              => $user,
-    group             => $group,
-    repo_config       => $repo_config,
-    add_net_bind_caps => $_add_net_bind_caps,
+  if $::atlantis::service_ensure {
+    class { 'atlantis::service':
+      user              => $user,
+      group             => $group,
+      repo_config       => $repo_config,
+      service_ensure    => $service_ensure,
+      add_net_bind_caps => $_add_net_bind_caps,
+    }
+    contain atlantis::service
+
+    Class['atlantis::config'] ~> Class['atlantis::service']
   }
-  contain atlantis::service
 
   Class['atlantis::install']
   -> Class['atlantis::config']
-  ~> Class['atlantis::service']
 
 }

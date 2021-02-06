@@ -2,6 +2,7 @@
 class atlantis::service (
   $user,
   $group,
+  Optional[Variant[String,Boolean]] $service_ensure = 'running',
   $repo_config,
   $add_net_bind_caps,
 ){
@@ -37,7 +38,7 @@ class atlantis::service (
   }
 
   service { 'atlantis':
-    ensure    => running,
+    ensure    => $service_ensure,
     enable    => true,
     subscribe => Exec['atlantis_systemd_daemon-reload'],
   }
