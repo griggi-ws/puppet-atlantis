@@ -1,10 +1,10 @@
 # @api private
 class atlantis::service (
-  $user,
-  $group,
-  Optional[Variant[String,Boolean]] $service_ensure = 'running',
-  $repo_config,
-  $add_net_bind_caps,
+  String $user,
+  String $group,
+  Hash $repo_config,
+  Boolean $add_net_bind_caps,
+  Variant[String,Boolean] $service_ensure = 'running',
 ) {
   assert_private()
 

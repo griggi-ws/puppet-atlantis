@@ -53,7 +53,7 @@ class atlantis (
   Array $environment = [],
   String $user = 'atlantis',
   String $group = 'atlantis',
-  Optional[Variant[String,Boolean]] $service_ensure = 'running',
+  Variant[String,Boolean] $service_ensure = 'running',
   Boolean $manage_user = true,
   Boolean $manage_group = true,
   String $version = 'v0.27.1',
