@@ -5,8 +5,7 @@ class atlantis::service (
   Optional[Variant[String,Boolean]] $service_ensure = 'running',
   $repo_config,
   $add_net_bind_caps,
-){
-
+) {
   assert_private()
 
   if !empty($repo_config) {
@@ -15,32 +14,16 @@ class atlantis::service (
     $_repo_config_file = undef
   }
 
-  file { 'atlantis_service_unit':
-    ensure  => file,
-    path    => '/etc/systemd/system/atlantis.service',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
+  systemd::unit_file { 'atlantis.service':
     content => epp('atlantis/atlantis.service.epp', {
-      'environment_file'  => '/etc/atlantis/env',
-      'config_file'       => '/etc/atlantis/config.yaml',
-      'repo_config_file'  => $_repo_config_file,
-      'user'              => $user,
-      'group'             => $group,
-      'add_net_bind_caps' => $add_net_bind_caps,
+        'environment_file'  => '/etc/atlantis/env',
+        'config_file'       => '/etc/atlantis/config.yaml',
+        'repo_config_file'  => $_repo_config_file,
+        'user'              => $user,
+        'group'             => $group,
+        'add_net_bind_caps' => $add_net_bind_caps,
     }),
-    notify  => Exec['atlantis_systemd_daemon-reload'],
+    enable  => true,
+    active  => true,
   }
-
-  exec { 'atlantis_systemd_daemon-reload':
-    command     => '/usr/bin/systemctl daemon-reload',
-    refreshonly => true,
-  }
-
-  service { 'atlantis':
-    ensure    => $service_ensure,
-    enable    => true,
-    subscribe => Exec['atlantis_systemd_daemon-reload'],
-  }
-
 }

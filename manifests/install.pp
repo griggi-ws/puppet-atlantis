@@ -7,14 +7,13 @@ class atlantis::install (
   $group,
   $manage_user,
   $manage_group,
-){
-
+) {
   assert_private()
 
   $_file = basename($download_source)
 
   file { "/tmp/atlantis-${version}":
-    ensure =>  directory,
+    ensure => directory,
   }
 
   archive { "/tmp/atlantis-${version}/${_file}":
@@ -44,15 +43,14 @@ class atlantis::install (
   if $manage_user {
     user { $user:
       ensure     => present,
-      gid        =>  $group,
+      gid        => $group,
       managehome => true,
     }
   }
 
   if $manage_group {
     group { $group:
-      ensure =>  present,
+      ensure => present,
     }
   }
-
 }

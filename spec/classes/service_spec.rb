@@ -18,7 +18,7 @@ describe 'atlantis::service' do
       end
 
       it { is_expected.to compile }
-      it { is_expected.not_to contain_file('atlantis_service_unit').with_content(%r{--repo-config}) }
+      it { is_expected.not_to contain_systemd__unit_file('atlantis.service').with_content(%r{--repo-config}) }
 
       context 'with server-side repo config' do
         let(:params) do
@@ -38,7 +38,7 @@ describe 'atlantis::service' do
           }
         end
 
-        it { is_expected.to contain_file('atlantis_service_unit').with_content(%r{--repo-config}) }
+        it { is_expected.to contain_systemd__unit_file('atlantis.service').with_content(%r{--repo-config}) }
       end
     end
   end

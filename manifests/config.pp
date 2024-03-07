@@ -5,8 +5,7 @@ class atlantis::config (
   $environment,
   $user,
   $group,
-){
-
+) {
   assert_private()
 
   file { '/etc/atlantis':
@@ -21,7 +20,7 @@ class atlantis::config (
     owner   => $user,
     group   => $group,
     mode    => '0640',
-    content => inline_epp('<% $arr.each |$item| { %><%= "${item}\n" %><% } %>', {'arr' => $environment}),
+    content => inline_epp('<% $arr.each |$item| { %><%= "${item}\n" %><% } %>', { 'arr' => $environment }),
   }
 
   file { '/etc/atlantis/config.yaml':
@@ -41,5 +40,4 @@ class atlantis::config (
       content => to_yaml($repo_config),
     }
   }
-
 }
