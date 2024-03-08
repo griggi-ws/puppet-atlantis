@@ -28,7 +28,7 @@ class atlantis::config (
     owner   => $user,
     group   => $group,
     mode    => '0640',
-    content => to_yaml($config),
+    content => Deferred('stdlib::to_yaml', [$config]),
   }
 
   if ! empty($repo_config) {
@@ -37,7 +37,7 @@ class atlantis::config (
       owner   => $user,
       group   => $group,
       mode    => '0640',
-      content => to_yaml($repo_config),
+      content => Deferred('stdlib::to_yaml', [$repo_config]),
     }
   }
 }
