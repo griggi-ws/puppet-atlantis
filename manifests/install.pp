@@ -1,12 +1,12 @@
 # @api private
 class atlantis::install (
-  String $download_source,
-  String $version,
-  String $proxy,
-  String $user,
-  String $group,
-  Boolean $manage_user,
-  Boolean $manage_group,
+  Optional[String] $download_source,
+  Optional[String] $version,
+  Optional[String] $proxy,
+  Optional[String] $user,
+  Optional[String] $group,
+  Optional[Boolean] $manage_user,
+  Optional[Boolean] $manage_group,
 ) {
   assert_private()
 

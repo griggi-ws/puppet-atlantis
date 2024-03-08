@@ -1,10 +1,10 @@
 # @api private
 class atlantis::config (
-  Hash $config,
-  Hash $repo_config,
-  Array $environment,
-  String $user,
-  String $group,
+  Optional[Hash] $config,
+  Optional[Hash] $repo_config,
+  Optional[Array] $environment,
+  Optional[String] $user,
+  Optional[String] $group,
 ) {
   assert_private()
 
